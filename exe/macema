@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+
+require 'machine_cert_manager'
+
+cli = MachineCertManager::CLI.new
+cli.run
