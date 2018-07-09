@@ -9,8 +9,8 @@ module MachineCertManager
   DIR = {
     entry:   entry_file,
     root:    root,
-    src:     root.join('lib/machine_cert_manager'),
-    helpers: root.join('lib/machine_cert_manager/helpers')
+    src:     root.join('machine_cert_manager'),
+    helpers: root.join('machine_cert_manager/helpers')
   }
 
   require DIR[:src].join     'version'
@@ -20,5 +20,6 @@ module MachineCertManager
   require DIR[:src].join     'exporter'
   require DIR[:src].join     'cli'
 
-  Validator.new.validate
+  VALIDATOR = Validator.new
+  VALIDATOR.validate_base_apps
 end
