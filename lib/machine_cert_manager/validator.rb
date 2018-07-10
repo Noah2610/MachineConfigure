@@ -1,7 +1,7 @@
 module MachineCertManager
   # This class should validate that dependencies are installed (docker-machine).
   class Validator
-    include Helpers::Error
+    include Helpers::Message
     # Default command-line apps,
     # which need to be available.
     BASE_APPS = [
@@ -43,6 +43,17 @@ module MachineCertManager
       end
     end
 
+    # Check that the given <tt>zip_file</tt>
+    # doesn't exist already but that the path leading
+    # to the file does exist.
+    def validate_zip_file zip_file
+      path = File.dirname zip_file
+      error(
+        "The path to the zip file `#{path.to_path}' doesn't exist."
+      )  unless (is_directory? path)
+      ask_to_replace_file zip_file  if (is_file? zip_file)
+    end
+
     private
 
       def validate_app appname
@@ -62,14 +73,42 @@ module MachineCertManager
       end
 
       def validate_directory directory
-        return  if (valid_directory? directory)
+        return  if (is_directory? directory)
         error(
-          "Directory #{directory.to_s} does not exist or is a file."
+          "Directory `#{directory.to_s}' does not exist or is a file."
         )
       end
 
-      def valid_directory? directory
+      def is_directory? directory
         return File.directory? directory
+      end
+
+      def is_file? file
+        return File.file? file
+      end
+
+      def ask_to_replace_file file
+        warning_print(
+          "File `#{file.to_s}' already exists. What do you want to do?",
+          "  Overwrite file? (Remove existing and create new archive.) [y]",
+          "  Append content to existing archive? [a]",
+          "  Do nothing, abort. [N]",
+          "[y/a/N] "
+        )
+        answer = gets(1).strip.downcase
+        case answer
+        when ?y
+          message "Overwriting archive `#{file.to_s}'"
+          File.delete file
+        when ?a
+          message "Appending to archive `#{file.to_s}'"
+        when ?n, ''
+          message "Exiting."
+          abort
+        else
+          ask_to_replace_file file
+          return
+        end
       end
   end
 end
