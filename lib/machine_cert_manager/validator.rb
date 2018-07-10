@@ -46,12 +46,21 @@ module MachineCertManager
     # Check that the given <tt>zip_file</tt>
     # doesn't exist already but that the path leading
     # to the file does exist.
-    def validate_zip_file zip_file
+    def validate_zip_file_export zip_file
       path = File.dirname zip_file
       error(
         "The path to the zip file `#{path.to_path}' doesn't exist."
       )  unless (is_directory? path)
       ask_to_replace_file zip_file  if (is_file? zip_file)
+    end
+
+    # Similar to #validate_export_zip_file,
+    # but don't prompt for overwriting, etc.
+    # The zip file _has_ to exist in this case.
+    def validate_zip_file_import zip_file
+      error(
+        "The zip file `#{zip_file.to_s}' doesn't exist or is a directory."
+      )  unless (is_file? zip_file)
     end
 
     private

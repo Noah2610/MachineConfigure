@@ -5,18 +5,6 @@ module MachineCertManager
   class Exporter
     include Helpers::Message
 
-    # The path to the docker-machine storage directory.
-    # <tt>$MACHINE_STORAGE_PATH</tt> or <tt>'~/.docker/machine'</tt>.
-    DM_STORAGE_PATH = (ENV['MACHINE_STORAGE_PATH'] ? (
-      Pathname.new(ENV['MACHINE_STORAGE_PATH'].chomp(?/)).realpath
-    ) : (
-      Pathname.new(File.join(HOME, '.docker/machine'))
-    ))
-    # The path to the docker-machine <tt>'machines'</tt> directory.
-    DM_MACHINES_PATH = DM_STORAGE_PATH.join 'machines'
-    # The path to the docker-machine <tt>'certs'</tt> directory.
-    DM_CERTS_PATH = DM_STORAGE_PATH.join 'certs'
-
     # Initialize with a docker-machine <tt>name</tt>.
     def initialize name
       @machine_name = name
@@ -31,7 +19,7 @@ module MachineCertManager
 
     # Export certificates for the machine.
     def export_to zip_file
-      VALIDATOR.validate_zip_file zip_file
+      VALIDATOR.validate_zip_file_export zip_file
       files     = get_files
       @contents = get_contents_from_files(*files)
       config_json_path = remove_storage_path_from DM_MACHINES_PATH.join(@machine_name, 'config.json').to_path
