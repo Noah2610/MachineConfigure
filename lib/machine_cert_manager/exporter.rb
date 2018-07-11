@@ -4,6 +4,7 @@ module MachineCertManager
   # and bundle them all into a single zip archive.
   class Exporter
     include Helpers::Message
+    include Helpers::Shared
 
     # Initialize with a docker-machine <tt>name</tt>.
     def initialize name
@@ -22,8 +23,9 @@ module MachineCertManager
       VALIDATOR.validate_zip_file_export zip_file
       files     = get_files
       @contents = get_contents_from_files(*files)
-      config_json_path = remove_storage_path_from DM_MACHINES_PATH.join(@machine_name, 'config.json').to_path
-      @contents[config_json_path] = replace_home_in @contents[config_json_path]
+      config_json_path = get_config_json_path
+      @contents[config_json_path] = remove_home_in @contents[config_json_path]
+      @contents[MACHINE_NAME_FILENAME] = @machine_name
       write_zip_file_to zip_file
       message(
         "Successfully created zip archive",
@@ -63,17 +65,6 @@ module MachineCertManager
           path    = remove_storage_path_from file.to_path
           next [path, content]
         end .to_h
-      end
-
-      # Returns the <tt>filepath</tt> without DM_STORAGE_PATH.
-      def remove_storage_path_from filepath
-        return filepath.to_s.sub("#{DM_STORAGE_PATH.to_path}/", '')
-      end
-
-      # Replaces any occurences of the user's
-      # home directory path with HOME_REPLACE_STRING.
-      def replace_home_in string
-        return string.gsub(HOME, HOME_REPLACE_STRING)
       end
 
       # Write the processed <tt>@contents</tt> to

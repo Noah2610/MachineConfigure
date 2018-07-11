@@ -21,6 +21,10 @@ module MachineCertManager
   # docker-machine's config.json file.
   HOME_REPLACE_STRING = '<REPLACE_WITH_HOME>'
 
+  # This string will be used as the filename for an
+  # additional file, which will only have the machine name in it.
+  MACHINE_NAME_FILENAME = 'MACHINE_NAME'
+
   # The path to the docker-machine storage directory.
   # <tt>$MACHINE_STORAGE_PATH</tt> or <tt>'~/.docker/machine'</tt>.
   DM_STORAGE_PATH = (ENV['MACHINE_STORAGE_PATH'] ? (
@@ -34,6 +38,7 @@ module MachineCertManager
   DM_CERTS_PATH = DM_STORAGE_PATH.join 'certs'
 
   require DIR[:src].join     'version'
+  require DIR[:helpers].join 'shared'
   require DIR[:helpers].join 'message'
   require DIR[:src].join     'validator'
   require DIR[:src].join     'exporter'

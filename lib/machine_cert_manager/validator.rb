@@ -43,6 +43,13 @@ module MachineCertManager
       end
     end
 
+    # Check that the given <tt>directories</tt> do *NOT* exist.
+    def validate_directories_dont_exist *directories
+      directories.flatten.each do |directory|
+        validate_directory_doesnt_exist directory
+      end
+    end
+
     # Check that the given <tt>zip_file</tt>
     # doesn't exist already but that the path leading
     # to the file does exist.
@@ -86,6 +93,12 @@ module MachineCertManager
         error(
           "Directory `#{directory.to_s}' does not exist or is a file."
         )
+      end
+
+      def validate_directory_doesnt_exist directory
+        error(
+          "Directory `#{directory.to_s}' already exists."
+        )  if (is_directory?(directory) || is_file?(directory))
       end
 
       def is_directory? directory
