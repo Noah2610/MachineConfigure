@@ -2,9 +2,10 @@
 Export or import your docker-machine's configuration files,  
 and share them with others.
 
-## Table of Contents
+## Table of Contents _(Generated)_
 - [Description](#description)
 - [Installation](#installation)
+  - [Install manually](#install-manually)
 - [Usage](#usage)
   - [Exporting](#exporting)
     - [Example](#example)
@@ -36,6 +37,30 @@ Install from [rubygems][rubygems-site] with ...
 ```
 $ gem install machine_cert_manager
 ```
+
+### Install manually
+If you want to install the gem manually from this repository directly,  
+you'll need to:
+
+- Clone the repository,
+- install all dependencies,
+- build the gem, and
+- install it.
+
+Here's a command to copy/paste, it does all of the above ...
+
+```
+git clone https://github.com/Noah2610/MachineCertManager.git && \
+cd MachineCertManager && \
+bundle install --with development && \
+rake build && \
+gems=($(ls pkg/machine_cert_manager-*)); \
+gem install "${gems[-1]}"; \
+unset gems
+```
+
+Once this completes, you should have the gem installed.  
+You can try using it by executing `macema`.
 
 ## Usage
 ### Exporting

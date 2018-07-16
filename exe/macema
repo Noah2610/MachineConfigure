@@ -3,7 +3,5 @@
 require 'bundler/setup'
 require 'machine_cert_manager.rb'
 
-require 'byebug'
-
 cli = MachineCertManager::CLI.new
 cli.run
