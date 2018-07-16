@@ -32,7 +32,14 @@ module MachineCertManager
       validate_app 'docker-machine'
       error(
         "Docker machine #{name} is not available."
-      )  unless (system("docker-machine inspect #{name} &> /dev/null"))
+      )  unless (docker_machine_exists? name)
+    end
+
+    # Check that the given <tt>name</tt>
+    # does _not_ exist for docker-machine.
+    def validate_no_machine_name name
+      validate_app 'docker-machine'
+      prompt_to_replace_docker_machine name  if (docker_machine_exists? name)
     end
 
     # Check that the given <tt>directories</tt> exist,
@@ -58,10 +65,10 @@ module MachineCertManager
       error(
         "The path to the zip file `#{path.to_path}' doesn't exist."
       )  unless (is_directory? path)
-      ask_to_replace_file zip_file  if (is_file? zip_file)
+      prompt_to_replace_file zip_file  if (is_file? zip_file)
     end
 
-    # Similar to #validate_export_zip_file,
+    # Similar to #validate_zip_file_export,
     # but don't prompt for overwriting, etc.
     # The zip file _has_ to exist in this case.
     def validate_zip_file_import zip_file
@@ -88,6 +95,10 @@ module MachineCertManager
         return system("which #{name} &> /dev/null")
       end
 
+      def docker_machine_exists? name
+        return system("docker-machine inspect #{name} &> /dev/null")
+      end
+
       def validate_directory directory
         return  if (is_directory? directory)
         error(
@@ -109,28 +120,101 @@ module MachineCertManager
         return File.file? file
       end
 
-      def ask_to_replace_file file
+      def prompt_to_replace_file file
+        options = {
+          overwrite: ?o,
+          append:    ?a,
+          nothing:   ?N
+        }
         warning_print(
           "File `#{file.to_s}' already exists. What do you want to do?",
-          "  Overwrite file? (Remove existing and create new archive.) [y]",
-          "  Append content to existing archive? [a]",
-          "  Do nothing, abort. [N]",
-          "[y/a/N] "
+          "  Overwrite file? (Remove existing and create new archive.) [#{options[:overwrite]}]",
+          "  Append content to existing archive? [#{options[:append]}]",
+          "  Do nothing, abort. [#{options[:nothing]}]",
+          "[#{options.values.join(?/)}] "
         )
-        answer = gets(1).strip.downcase
+        answer = gets[0].strip.downcase
         case answer
-        when ?y
-          message "Overwriting archive `#{file.to_s}'"
+        when options[:overwrite].downcase
+          message "Overwriting archive `#{file.to_s}'."
           File.delete file
-        when ?a
-          message "Appending to archive `#{file.to_s}'"
-        when ?n, ''
+        when options[:append].downcase
+          message "Appending to archive `#{file.to_s}'."
+        when options[:nothing].downcase, ''
           message "Exiting."
           abort
         else
-          ask_to_replace_file file
+          prompt_to_replace_file file
           return
         end
+      end
+
+      def prompt_to_replace_docker_machine name
+        options = {
+          backup:    ?B,
+          overwrite: ?o,
+          nothing:   ?n
+        }
+        warning_print(
+          "Docker machine `#{name}' already exists. What do you want to do?",
+          "  Backup current configurations and create new one from import? [#{options[:backup]}]",
+          "    (Backup to #{DM_BACKUP_PATH})",
+          "  Overwrite existing files? [#{options[:overwrite]}]",
+          "  Do nothing, abort. [#{options[:nothing]}]",
+          "[#{options.values.join(?/)}] "
+        )
+        answer = gets[0].strip.downcase
+        case answer
+        when options[:overwrite].downcase
+          message "Overwriting existing configuration files for `#{name}'."
+        when options[:backup].downcase, ''
+          backup_docker_machine name
+        when options[:nothing].downcase
+          message "Exiting."
+          abort
+        else
+          prompt_to_replace_docker_machine name
+          return
+        end
+      end
+
+      def backup_docker_machine name
+        backup_name_date = "#{name}.#{Time.now.strftime('%Y-%m-%d')}"
+        mk_backup_directories
+        machine_path            = DM_MACHINES_PATH.join        name
+        cert_path               = DM_CERTS_PATH.join           name
+        backup_machine_path     = DM_BACKUP_MACHINES_PATH.join backup_name_date
+        backup_cert_path        = DM_BACKUP_CERTS_PATH.join    backup_name_date
+        if (backup_machine_path.directory?)
+          backup_machine_path_tmp = backup_machine_path.dup
+          counter = 0
+          while (backup_machine_path_tmp.directory?)
+            counter += 1
+            backup_machine_path_tmp = Pathname.new "#{backup_machine_path.to_path}_#{counter}"
+          end
+          backup_machine_path = backup_machine_path_tmp
+        end
+        if (backup_cert_path.directory?)
+          backup_cert_path_tmp = backup_cert_path.dup
+          counter = 0
+          while (backup_cert_path_tmp.directory?)
+            counter += 1
+            backup_cert_path_tmp = Pathname.new "#{backup_cert_path.to_path}_#{counter}"
+          end
+          backup_cert_path = backup_cert_path_tmp
+        end
+        message(
+          "Backing-up configuration files for `#{name}' to",
+          "  `#{backup_machine_path}' and",
+          "  `#{backup_cert_path}'"
+        )
+        FileUtils.mv machine_path, backup_machine_path
+        FileUtils.mv cert_path,    backup_cert_path
+      end
+
+      def mk_backup_directories
+        DM_BACKUP_MACHINES_PATH.mkpath  unless (DM_BACKUP_MACHINES_PATH.directory?)
+        DM_BACKUP_CERTS_PATH.mkpath     unless (DM_BACKUP_CERTS_PATH.directory?)
       end
   end
 end

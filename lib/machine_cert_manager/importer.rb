@@ -22,10 +22,19 @@ module MachineCertManager
         machine: DM_MACHINES_PATH.join(@machine_name),
         certs:   DM_CERTS_PATH.join(@machine_name)
       }
-      VALIDATOR.validate_directories_dont_exist *@dir.values
+      #VALIDATOR.validate_directories_dont_exist *@dir.values
+      VALIDATOR.validate_no_machine_name @machine_name
       config_json_path = get_config_json_path
       @contents[config_json_path] = insert_home_in @contents[config_json_path]
       write_contents
+      # Finally, check that the newly imported machine is recognized by docker-machine.
+      VALIDATOR.validate_machine_name @machine_name
+      message(
+        "Successfully imported docker-machine configuration files from archive",
+        "  `#{zip_file.to_s}'",
+        "for docker-machine",
+        "  `#{@machine_name}'"
+      )
     end
 
     private

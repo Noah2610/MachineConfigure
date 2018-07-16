@@ -1,4 +1,5 @@
 require 'argument_parser'
+require 'fileutils'
 require 'pathname'
 require 'zip'
 
@@ -10,6 +11,7 @@ module MachineCertManager
 
   HOME = Dir.home.chomp ?/
   DIR = {
+    caller:  Pathname.new($0).realpath,
     entry:   entry_file,
     root:    root,
     src:     root.join('machine_cert_manager'),
@@ -36,6 +38,10 @@ module MachineCertManager
   DM_MACHINES_PATH = DM_STORAGE_PATH.join 'machines'
   # The path to the docker-machine <tt>'certs'</tt> directory.
   DM_CERTS_PATH = DM_STORAGE_PATH.join 'certs'
+  # The paths for the machines backup directories <em>(Created by this script.)</em>.
+  DM_BACKUP_PATH          = DM_STORAGE_PATH.join("#{DIR[:caller].basename}.backup")
+  DM_BACKUP_MACHINES_PATH = DM_BACKUP_PATH.join('machines')
+  DM_BACKUP_CERTS_PATH    = DM_BACKUP_PATH.join('certs')
 
   require DIR[:src].join     'version'
   require DIR[:helpers].join 'shared'

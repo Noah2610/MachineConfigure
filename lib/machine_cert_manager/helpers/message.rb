@@ -16,7 +16,7 @@ module MachineCertManager
           abort([
             "Stack traceback (most recent call last):",
             stack_trace,
-            "#{DIR[:entry].to_path} ERROR:",
+            "#{_get_message_header} ERROR:",
             message,
             "#{MESSAGE_PADDING}Exiting."
           ].flatten.join(?\n))
@@ -35,7 +35,7 @@ module MachineCertManager
         def message *messages
           message = messages.flatten.join(?\n).gsub(/^/, MESSAGE_PADDING)
           puts([
-            "#{DIR[:entry].to_path}",
+            "#{_get_message_header}",
             message
           ].flatten.join(?\n))
         end
@@ -43,9 +43,13 @@ module MachineCertManager
         def _get_warning_message_from *messages
           message = messages.flatten.join(?\n).gsub(/^/, MESSAGE_PADDING)
           return [
-            "#{DIR[:entry].to_path} WARNING:",
+            "#{_get_message_header} WARNING:",
             message
           ].flatten.join(?\n)
+        end
+
+        def _get_message_header
+          return DIR[:caller].basename
         end
     end
   end
