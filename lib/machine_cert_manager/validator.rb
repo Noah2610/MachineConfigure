@@ -181,40 +181,40 @@ module MachineCertManager
       def backup_docker_machine name
         backup_name_date = "#{name}.#{Time.now.strftime('%Y-%m-%d')}"
         mk_backup_directories
-        machine_path            = DM_MACHINES_PATH.join        name
-        cert_path               = DM_CERTS_PATH.join           name
-        backup_machine_path     = DM_BACKUP_MACHINES_PATH.join backup_name_date
-        backup_cert_path        = DM_BACKUP_CERTS_PATH.join    backup_name_date
-        if (backup_machine_path.directory?)
-          backup_machine_path_tmp = backup_machine_path.dup
-          counter = 0
-          while (backup_machine_path_tmp.directory?)
-            counter += 1
-            backup_machine_path_tmp = Pathname.new "#{backup_machine_path.to_path}_#{counter}"
-          end
-          backup_machine_path = backup_machine_path_tmp
-        end
-        if (backup_cert_path.directory?)
-          backup_cert_path_tmp = backup_cert_path.dup
-          counter = 0
-          while (backup_cert_path_tmp.directory?)
-            counter += 1
-            backup_cert_path_tmp = Pathname.new "#{backup_cert_path.to_path}_#{counter}"
-          end
-          backup_cert_path = backup_cert_path_tmp
-        end
-        message(
-          "Backing-up configuration files for `#{name}' to",
-          "  `#{backup_machine_path}' and",
-          "  `#{backup_cert_path}'"
-        )
-        FileUtils.mv machine_path, backup_machine_path
-        FileUtils.mv cert_path,    backup_cert_path
+        machine_path        = DM_MACHINES_PATH.join name
+        cert_path           = DM_CERTS_PATH.join    name
+
+        #backup_machine_path = DM_BACKUP_MACHINES_PATH.join backup_name_date
+        #backup_cert_path    = DM_BACKUP_CERTS_PATH.join    backup_name_date
+
+        backup_machine_path = backup_cert_path = nil
+        backup_machine_path = get_backup_directory_for DM_BACKUP_MACHINES_PATH.join(backup_name_date)  if (machine_path.directory?)
+        backup_cert_path    = get_backup_directory_for DM_BACKUP_CERTS_PATH.join(backup_name_date)     if (cert_path.directory?)
+
+        msg = [ "Backing-up configuration files for `#{name}' to" ]
+        msg << "  `#{backup_machine_path}'"  if (backup_machine_path)
+        msg[-1] += ', and'                   if (backup_machine_path && backup_cert_path)
+        msg << "  `#{backup_cert_path}'"     if (backup_cert_path)
+        message msg
+        FileUtils.mv machine_path, backup_machine_path  if (backup_machine_path)
+        FileUtils.mv cert_path,    backup_cert_path     if (backup_cert_path)
       end
 
       def mk_backup_directories
         DM_BACKUP_MACHINES_PATH.mkpath  unless (DM_BACKUP_MACHINES_PATH.directory?)
         DM_BACKUP_CERTS_PATH.mkpath     unless (DM_BACKUP_CERTS_PATH.directory?)
+      end
+
+      def get_backup_directory_for base_backup_directory
+        base_backup_directory = Pathname.new base_backup_directory  unless (base_backup_directory.is_a? Pathname)
+        return base_backup_directory                                unless (base_backup_directory.directory?)
+        base_backup_directory_tmp = base_backup_directory.dup
+        counter = 0
+        while (base_backup_directory_tmp.directory?)
+          counter += 1
+          base_backup_directory_tmp = Pathname.new "#{base_backup_directory.to_path}_#{counter}"
+        end
+        return base_backup_directory_tmp
       end
   end
 end

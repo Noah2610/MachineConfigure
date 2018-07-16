@@ -14,7 +14,7 @@ module MachineCertManager
         machine: DM_MACHINES_PATH.join(@machine_name),
         certs:   DM_CERTS_PATH.join(@machine_name)
       }
-      VALIDATOR.validate_directories @dir.values
+      VALIDATOR.validate_directories @dir[:machine]
       @contents = nil
     end
 
@@ -42,12 +42,13 @@ module MachineCertManager
       def get_files
         return @dir.values.map do |dir|
           next get_files_recursively_from dir
-        end .flatten
+        end .reject { |x| !x } .flatten
       end
 
       # Returns all filepaths from <tt>directory</tt>, recursively.
       def get_files_recursively_from directory
         dir = Pathname.new directory
+        return nil  unless (dir.directory?)
         return dir.each_child.map do |file|
           next file.realpath.to_path            if (file.file?)
           next get_files_recursively_from file  if (file.directory?)
