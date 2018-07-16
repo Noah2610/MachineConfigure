@@ -2,6 +2,17 @@
 Export or import your docker-machine's configuration files,  
 and share them with others.
 
+## Table of Contents
+- [Description](#description)
+- [Installation](#installation)
+- [Usage](#usage)
+  - [Exporting](#exporting)
+    - [Example](#example)
+  - [Importing](#importing)
+    - [Example](#example)
+- [TODO](#todo)
+- [License](#license)
+
 ## Description
 This gem is heavily inspired by [machine-share][machine-share-site],  
 a nodejs package, which does basically the same thing as this gem.  
@@ -48,7 +59,11 @@ $ macema import --zip my_machine_configs.zip
 $ macema import -z    my_machine_configs.zip
 ```
 
-### TODO
+For all command-line options, see `--help`.
+
+---
+
+## TODO
 See the [Trello Board][trello-site] for open tasks.
 
 ## License
