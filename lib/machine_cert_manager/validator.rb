@@ -31,7 +31,7 @@ module MachineCertManager
     def validate_machine_name name
       validate_app 'docker-machine'
       error(
-        "Docker machine #{name} is not available."
+        "Docker machine `#{name}' is not available."
       )  unless (docker_machine_exists? name)
     end
 
@@ -133,7 +133,7 @@ module MachineCertManager
           "  Do nothing, abort. [#{options[:nothing]}]",
           "[#{options.values.join(?/)}] "
         )
-        answer = gets[0].strip.downcase
+        answer = STDIN.gets[0].strip.downcase
         case answer
         when options[:overwrite].downcase
           message "Overwriting archive `#{file.to_s}'."
@@ -163,7 +163,7 @@ module MachineCertManager
           "  Do nothing, abort. [#{options[:nothing]}]",
           "[#{options.values.join(?/)}] "
         )
-        answer = gets[0].strip.downcase
+        answer = STDIN.gets[0].strip.downcase
         case answer
         when options[:overwrite].downcase
           message "Overwriting existing configuration files for `#{name}'."

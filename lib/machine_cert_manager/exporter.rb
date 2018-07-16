@@ -20,6 +20,7 @@ module MachineCertManager
 
     # Export certificates for the machine.
     def export_to zip_file
+      zip_file = Pathname.new "#{zip_file.to_s}#{zip_file.to_s.match(/\.zip\z/i) ? '' : '.zip'}"
       VALIDATOR.validate_zip_file_export zip_file
       files     = get_files
       @contents = get_contents_from_files(*files)

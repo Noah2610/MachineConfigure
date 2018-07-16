@@ -1,9 +1,8 @@
+require 'bundler/setup'
 require 'argument_parser'
 require 'fileutils'
 require 'pathname'
 require 'zip'
-
-require 'byebug'
 
 module MachineCertManager
   entry_file = Pathname.new(__FILE__).realpath
@@ -17,6 +16,9 @@ module MachineCertManager
     src:     root.join('machine_cert_manager'),
     helpers: root.join('machine_cert_manager/helpers')
   }
+
+  # The gem's name.
+  PROGRAM_NAME = 'machine_cert_manager'
 
   # This constant will replace any occurences of
   # the user's home directory path in the
@@ -49,6 +51,7 @@ module MachineCertManager
   require DIR[:src].join     'validator'
   require DIR[:src].join     'exporter'
   require DIR[:src].join     'importer'
+  require DIR[:src].join     'cli_constants'
   require DIR[:src].join     'cli'
 
   VALIDATOR = Validator.new
