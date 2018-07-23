@@ -1,4 +1,4 @@
 module MachineConfigure
   GEM_NAME = 'machine_configure'
-  VERSION  = '0.0.1'
+  VERSION  = '0.0.2'
 end

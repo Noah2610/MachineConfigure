@@ -1,5 +1,4 @@
 require 'bundler/setup'
-require 'argument_parser'
 require 'fileutils'
 require 'pathname'
 require 'zip'
@@ -43,6 +42,7 @@ module MachineConfigure
   DM_BACKUP_CERTS_PATH    = DM_BACKUP_PATH.join('certs')
 
   require DIR[:src].join     'meta'
+  require DIR[:root].join    'argument_parser'
   require DIR[:helpers].join 'shared'
   require DIR[:helpers].join 'message'
   require DIR[:src].join     'validator'
