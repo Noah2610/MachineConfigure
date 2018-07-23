@@ -1,18 +1,18 @@
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib)  unless $LOAD_PATH.include?(lib)
-require 'machine_cert_manager/version'
-github_url = 'https://github.com/Noah2610/machine_cert_manager'
+require 'machine_configure/meta'
+github_url = 'https://github.com/Noah2610/MachineConfigure'
 
 Gem::Specification.new do |spec|
-  spec.name        = 'machine_cert_manager'
-  spec.version     = MachineCertManager::VERSION
+  spec.name        = MachineConfigure::GEM_NAME
+  spec.version     = MachineConfigure::VERSION
   spec.authors     = ['Noah Rosenzweig']
   spec.email       = ['rosenzweig.noah@gmail.com']
-  spec.summary     = 'Manage your docker-machines\' certificates.'
+  spec.summary     = 'Manage your docker-machines\' configuration files.'
   spec.description = <<-END
-    This gem can import or export the necessary certificates
+    This gem can import or export the necessary configuration files
     for your docker-machine configuration.
-    Use it to share your machine's certificates with others.
+    Use it to share your machine instances with others.
   END
   spec.homepage    = github_url
   spec.license     = 'MIT'

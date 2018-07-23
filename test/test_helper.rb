@@ -1,4 +1,4 @@
-$LOAD_PATH.unshift File.expand_path("../../lib", __FILE__)
-require "machine_cert_manager"
+$LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
+require 'machine_configure'
 
-require "minitest/autorun"
+require 'minitest/autorun'

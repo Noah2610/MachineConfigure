@@ -1,4 +1,4 @@
-module MachineCertManager
+module MachineConfigure
   module CLIConstants
     # Hash containing all valid arguments,
     # which may be passed to the CLI.

@@ -4,7 +4,7 @@ require 'fileutils'
 require 'pathname'
 require 'zip'
 
-module MachineCertManager
+module MachineConfigure
   entry_file = Pathname.new(__FILE__).realpath
   root       = entry_file.dirname
 
@@ -13,12 +13,9 @@ module MachineCertManager
     caller:  Pathname.new($0).realpath,
     entry:   entry_file,
     root:    root,
-    src:     root.join('machine_cert_manager'),
-    helpers: root.join('machine_cert_manager/helpers')
+    src:     root.join('machine_configure'),
+    helpers: root.join('machine_configure/helpers')
   }
-
-  # The gem's name.
-  PROGRAM_NAME = 'machine_cert_manager'
 
   # This constant will replace any occurences of
   # the user's home directory path in the
@@ -45,7 +42,7 @@ module MachineCertManager
   DM_BACKUP_MACHINES_PATH = DM_BACKUP_PATH.join('machines')
   DM_BACKUP_CERTS_PATH    = DM_BACKUP_PATH.join('certs')
 
-  require DIR[:src].join     'version'
+  require DIR[:src].join     'meta'
   require DIR[:helpers].join 'shared'
   require DIR[:helpers].join 'message'
   require DIR[:src].join     'validator'

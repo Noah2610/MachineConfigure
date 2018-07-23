@@ -1,4 +1,4 @@
-module MachineCertManager
+module MachineConfigure
   module Helpers
     module Shared
       private

@@ -1,4 +1,4 @@
-module MachineCertManager
+module MachineConfigure
   module Helpers
     # This helper provides useful error methods,
     # which may abort the script with an error message

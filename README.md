@@ -1,4 +1,4 @@
-# MachineCertManager
+# MachineConfigure
 Export or import your docker-machine's configuration files,  
 and share them with others.
 
@@ -35,7 +35,7 @@ The gem is not yet available on rubygems.org, this is still a todo.__
 Install from [rubygems][rubygems-site] with ...
 
 ```
-$ gem install machine_cert_manager
+$ gem install machine_configure
 ```
 
 ### Install manually
@@ -50,11 +50,11 @@ you'll need to:
 Here's a command to copy/paste, it does all of the above ...
 
 ```
-git clone https://github.com/Noah2610/MachineCertManager.git && \
-cd MachineCertManager && \
+git clone https://github.com/Noah2610/MachineConfigure.git && \
+cd MachineConfigure && \
 bundle install --with development && \
 rake build && \
-gems=($(ls pkg/machine_cert_manager-*)); \
+gems=($(ls pkg/machine_configure-*)); \
 gem install "${gems[-1]}"; \
 unset gems
 ```
@@ -96,6 +96,6 @@ The gem is available as open source under the terms of the [MIT License][mit-sit
 
 [machine-share-site]:  https://github.com/bhurlow/machine-share
 [docker-machine-site]: https://docs.docker.com/machine
-[rubygems-site]:       https://rubygems.org/gems/machine_cert_manager
+[rubygems-site]:       https://rubygems.org/gems/machine_configure
 [trello-site]:         https://trello.com/b/ZVdArdrk
 [mit-site]:            https://opensource.org/licenses/MIT

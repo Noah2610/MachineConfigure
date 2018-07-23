@@ -1,4 +1,4 @@
-module MachineCertManager
+module MachineConfigure
   # This class should validate that dependencies are installed (docker-machine).
   class Validator
     include Helpers::Message

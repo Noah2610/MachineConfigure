@@ -1,4 +1,4 @@
-module MachineCertManager
+module MachineConfigure
   # The Importer takes a zip file,
   # processes the files,
   # and extracts them into the proper directories.

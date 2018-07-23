@@ -3,7 +3,7 @@
 
 root="$( dirname "$0" )/.."
 dir="${root}/lib"
-main="${dir}/machine_cert_manager.rb"
+main="${dir}/machine_configure.rb"
 output_dir="${root}/doc"
 
 rdoc --main "$main" --op "$output_dir" $dir

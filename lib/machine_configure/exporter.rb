@@ -1,4 +1,4 @@
-module MachineCertManager
+module MachineConfigure
   # The Exporter is responsible for finding all
   # necessary certificates for a given docker-machine,
   # and bundle them all into a single zip archive.

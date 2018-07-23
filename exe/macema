@@ -1,7 +1,0 @@
-#!/usr/bin/env ruby
-
-require 'bundler/setup'
-require 'machine_cert_manager.rb'
-
-cli = MachineCertManager::CLI.new
-cli.run

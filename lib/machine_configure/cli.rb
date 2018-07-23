@@ -1,4 +1,4 @@
-module MachineCertManager
+module MachineConfigure
   class CLI
     include Helpers::Message
     include CLIConstants
@@ -31,7 +31,7 @@ module MachineCertManager
       end
 
       def print_version
-        puts "#{PROGRAM_NAME} v#{VERSION}"
+        puts "#{GEM_NAME} v#{VERSION}"
         exit
       end
 

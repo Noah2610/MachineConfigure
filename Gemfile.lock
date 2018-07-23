@@ -7,7 +7,7 @@ GIT
 PATH
   remote: .
   specs:
-    machine_cert_manager (0.0.1)
+    machine_configure (0.0.1)
       rubyzip (~> 1.2)
 
 GEM
@@ -24,10 +24,10 @@ PLATFORMS
 DEPENDENCIES
   argument_parser!
   bundler (~> 1.16)
-  machine_cert_manager!
+  machine_configure!
   minitest (~> 5.0)
   rake (~> 10.0)
   rdoc
 
 BUNDLED WITH
-   1.16.2
+   1.16.3
