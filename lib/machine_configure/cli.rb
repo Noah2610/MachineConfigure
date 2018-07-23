@@ -36,9 +36,10 @@ module MachineConfigure
       end
 
       def handle_export
-        verify_options :name, :zipfile
+        verify_options :name #, :zipfile
         dm_name = @arguments[:options][:name]
         zipfile = @arguments[:options][:zipfile]
+        zipfile = get_zipfile_from_name dm_name  unless (zipfile)
         exporter = Exporter.new dm_name
         exporter.export_to zipfile
       end
@@ -58,6 +59,10 @@ module MachineConfigure
             )
           end
         end
+      end
+
+      def get_zipfile_from_name dm_name
+        return "#{dm_name}.zip"
       end
   end
 end
