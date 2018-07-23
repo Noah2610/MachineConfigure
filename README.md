@@ -60,28 +60,27 @@ unset gems
 ```
 
 Once this completes, you should have the gem installed.  
-You can try using it by executing `macema`.
+You can try using it by executing `maccon`.
 
 ## Usage
 ### Exporting
 To export the configurations of an existing docker-machine instance,  
-use the `export` keyword, pass the machine's name with `--name`,  
-and the output zip file with `--zip`.
+use the `export` keyword, pass the machine's name,  
+and optionally, the output zip file.
 #### Example
 
 ```
-$ macema export --name my_machine --zip my_machine_configs.zip
-$ macema export -n     my_machine -z    my_machine_configs.zip
+$ maccon export my_machine                         # Creates my_machine.zip
+$ maccon export my_machine my_machine_configs.zip  # Creates my_machine_configs.zip
 ```
 
 ### Importing
 To import a docker-machine's configuration files from a zip file,  
-use the `import` keyword, and pass the target zip file with `--zip`.
+use the `import` keyword, and pass the target zip file.
 #### Example
 
 ```
-$ macema import --zip my_machine_configs.zip
-$ macema import -z    my_machine_configs.zip
+$ maccon import my_machine_configs.zip
 ```
 
 For all command-line options, see `--help`.
