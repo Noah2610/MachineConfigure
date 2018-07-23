@@ -29,9 +29,6 @@ docker-machine instance into a zip file. You can then share the created
 zip file with others / other computers and import it again.
 
 ## Installation
-__ATTENTION:  
-The gem is not yet available on rubygems.org, this is still a todo.__
-
 Install from [rubygems][rubygems-site] with ...
 
 ```
